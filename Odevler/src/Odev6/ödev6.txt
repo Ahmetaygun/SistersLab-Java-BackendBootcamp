@@ -1,0 +1,72 @@
+
+CREATE TABLE kitaplar (
+    kitap_id SERIAL PRIMARY KEY,
+    başlık VARCHAR(255) NOT NULL,
+    yazar_id INT NOT NULL,
+    yayınevi_id INT NOT NULL,
+    yayın_yılı INT NOT NULL,
+    isbn VARCHAR(20),
+    FOREIGN KEY (yazar_id) REFERENCES yazarlar(yazar_id),
+    FOREIGN KEY (yayınevi_id) REFERENCES yayınevleri(yayınevi_id)
+);
+
+CREATE TABLE yazarlar (
+    yazar_id SERIAL PRIMARY KEY,
+    yazar_adı VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE yayınevleri (
+    yayınevi_id SERIAL PRIMARY KEY,
+    yayınevi_adı VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE müşteriler (
+    müşteri_id SERIAL PRIMARY KEY,
+    müşteri_adı VARCHAR(100) NOT NULL,
+    email VARCHAR(255)
+);
+
+CREATE TABLE ödünç (
+    ödünç_id SERIAL PRIMARY KEY,
+    kitap_id INT NOT NULL,
+    müşteri_id INT NOT NULL,
+    ödünç_tarihi DATE NOT NULL,
+    iade_tarihi DATE,
+    FOREIGN KEY (kitap_id) REFERENCES kitaplar(kitap_id),
+    FOREIGN KEY (müşteri_id) REFERENCES müşteriler(müşteri_id)
+);
+
+INSERT INTO yazarlar (yazar_adı) VALUES
+    ('Orhan Pamuk'),
+    ('Yaşar Kemal'),
+    ('Sabahattin Ali'),
+    ('Elif Şafak'),
+    ('Ahmet Hamdi Tanpınar');
+
+INSERT INTO yayınevleri (yayınevi_adı) VALUES
+    ('Doğan Kitap'),
+    ('İş Bankası Kültür Yayınları'),
+    ('Can Yayınları'),
+    ('Yapı Kredi Yayınları'),
+    ('Everest Yayınları');
+
+INSERT INTO müşteriler (müşteri_adı, email) VALUES
+    ('Ali', 'a@gmail.com'),
+    ('Ayşe', 'b@gmail.com'),
+    ('Ahmet', 'c@gmail.com'),
+    ('Fatma', 'd@gmail.com'),
+    ('Zeynep', 'e@gmail.com');
+
+INSERT INTO kitaplar (başlık, yazar_id, yayınevi_id, yayın_yılı, isbn) VALUES
+    ('Kırmızı Saçlı Kadın', 1, 1, 2016, '978-975-458-836-4'),
+    ('İnce Memed', 2, 2, 1955, '975-458-833-0'),
+    ('Kuyucaklı Yusuf', 3, 3, 1937, '975-458-822-5'),
+    ('Aşk', 4, 4, 2009, '978-975-08-0149-7'),
+    ('Huzur', 5, 5, 1949, '975-08-0004-5');
+
+INSERT INTO ödünç (kitap_id, müşteri_id, ödünç_tarihi, iade_tarihi) VALUES
+    (1, 2, '2024-02-24', '2024-03-24'),
+    (3, 4, '2024-02-24', '2024-03-24'),
+    (2, 3, '2024-02-24', '2024-03-24'),
+    (4, 5, '2024-02-24', '2024-03-24'),
+    (5, 1, '2024-02-24', '2024-03-24');
